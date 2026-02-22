@@ -56,8 +56,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.4rem 3rem;
-  background: rgba(10,10,12,0.85);
+  padding: 1.2rem 1.5rem;
+  background: rgba(10,10,12,0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
@@ -75,7 +75,7 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   list-style: none;
 }
 
@@ -91,6 +91,50 @@ nav {
 .nav-links a:hover,
 .nav-links a.active { color: var(--accent); }
 
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+@media (max-width: 640px) {
+  .nav-toggle { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 57px; left: 0; right: 0;
+    background: rgba(10,10,12,0.98);
+    flex-direction: column;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+  }
+
+  .nav-links.open { display: flex; }
+
+  .nav-links li { border-bottom: 1px solid var(--border); }
+
+  .nav-links a {
+    display: block;
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+  }
+}
+
 /* SECTIONS */
 section {
   display: none;
@@ -99,6 +143,15 @@ section {
   position: relative;
   z-index: 1;
   animation: fadeIn 0.4s ease;
+}
+
+@media (max-width: 640px) {
+  section { padding: 6rem 1.25rem 3rem; }
+  .resume-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .hero-stats { gap: 1.5rem; }
+  .market-grid { grid-template-columns: 1fr 1fr; }
+  .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+  .interest-cards { grid-template-columns: 1fr; }
 }
 
 section.active { display: block; }
@@ -500,14 +553,6 @@ footer {
   z-index: 0;
 }
 
-@media (max-width: 640px) {
-  nav { padding: 1rem 1.5rem; }
-  section { padding: 7rem 1.5rem 3rem; }
-  .resume-item { grid-template-columns: 1fr; gap: 0.5rem; }
-  .hero-stats { gap: 1.5rem; }
-  .nav-links { gap: 1.2rem; }
-}
-
 /* ── LIVE DATA ─────────────────────────────────── */
 .live-section {
   margin-top: 3.5rem;
@@ -781,7 +826,10 @@ footer {
 
 <nav>
   <a href="#" class="nav-logo">JJV<span>.</span></a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#" onclick="showSection('home')" class="active" id="nav-home">Home</a></li>
     <li><a href="#" onclick="showSection('resume')" id="nav-resume">Résumé</a></li>
     <li><a href="#" onclick="showSection('interests')" id="nav-interests">Interests</a></li>
@@ -1154,8 +1202,15 @@ document.querySelectorAll(‘section’).forEach(s => s.classList.remove(‘acti
 document.querySelectorAll(’.nav-links a’).forEach(a => a.classList.remove(‘active’));
 document.getElementById(id).classList.add(‘active’);
 document.getElementById(‘nav-’ + id).classList.add(‘active’);
+// Close mobile menu
+document.getElementById(‘nav-links’).classList.remove(‘open’);
 return false;
 }
+
+// Hamburger toggle
+document.getElementById(‘nav-toggle’).addEventListener(‘click’, function() {
+document.getElementById(‘nav-links’).classList.toggle(‘open’);
+});
 
 // ── MLB SCORES ───────────────────────────────────────
 async function loadMLB() {
