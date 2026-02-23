@@ -957,10 +957,10 @@ footer {
 <nav>
   <a href="#" class="nav-logo">JJV<span>.</span></a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#" onclick="showSection('home')" class="active" id="nav-home">Home</a></li>
-    <li><a href="#" onclick="showSection('resume')" id="nav-resume">Résumé</a></li>
-    <li><a href="#" onclick="showSection('interests')" id="nav-interests">Interests</a></li>
-    <li><a href="#" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
+    <li><a href="#home" class="active" id="nav-home">Home</a></li>
+    <li><a href="#resume" id="nav-resume">Résumé</a></li>
+    <li><a href="#interests" id="nav-interests">Interests</a></li>
+    <li><a href="#contact" id="nav-contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -1331,12 +1331,19 @@ footer {
 
 // ── NAV ──────────────────────────────────────────────
 function showSection(id) {
-document.querySelectorAll(‘section’).forEach(s => s.classList.remove(‘active’));
-document.querySelectorAll(’.nav-links a’).forEach(a => a.classList.remove(‘active’));
-document.getElementById(id).classList.add(‘active’);
-document.getElementById(‘nav-’ + id).classList.add(‘active’);
-return false;
+  document.querySelectorAll(‘section’).forEach(s => s.classList.remove(‘active’));
+  document.querySelectorAll(‘.nav-links a’).forEach(a => a.classList.remove(‘active’));
+  document.getElementById(id).classList.add(‘active’);
+  document.getElementById(‘nav-’ + id).classList.add(‘active’);
 }
+
+document.querySelectorAll(‘.nav-links a’).forEach(a => {
+  a.addEventListener(‘click’, function(e) {
+    e.preventDefault();
+    const id = this.getAttribute(‘href’).replace(‘#’, ‘’);
+    showSection(id);
+  });
+});
 
 // ── ORIOLES WIDGET ───────────────────────────────────
 async function loadOrioles() {
